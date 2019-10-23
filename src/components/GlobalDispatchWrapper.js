@@ -1,9 +1,14 @@
 import React, { PureComponent } from "react";
 
 import { connect } from "react-redux";
-import Globals from "../util/globals";
+import Globals from "../utils/globals";
+import PropTypes from 'prop-types'
 
 class GlobalDispatchWrapper extends PureComponent {
+
+  static propsTypes = {
+    dispatch: PropTypes.object.isRequired
+  }
 
   state = {
     dispatchOk: false
@@ -33,4 +38,4 @@ class GlobalDispatchWrapper extends PureComponent {
   }
 }
 
-export default connect(state => ({}))(GlobalDispatchWrapper);
+export default connect(_ => ({}))(GlobalDispatchWrapper);

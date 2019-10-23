@@ -1,5 +1,6 @@
 import { combineReducers } from "redux";
 import ActionsTypes from "../types";
+import produce from "immer";
 
 const ini = {
   status: "",
@@ -11,42 +12,33 @@ const ini = {
  * @param {String} CALL is the type of action to catch
  */
 
-const getReducer = CALL => (state = { ...ini }, action) => {
+const getReducer = CALL => produce((state = ini, action) => {
   switch (action.type) {
     case CALL + ActionsTypes.RESET: {
-      return {
-        ...ini
-      };
+      state = ini
+      break
     }
     case CALL + ActionsTypes.FETCHING: {
-      return {
-        ...state,
-        status: ActionsTypes.FETCHING
-      };
+      state.status = ActionsTypes.FETCHING
+      break
     }
-
     case CALL + ActionsTypes.FETCHED: {
-      return {
-        ...state,
-        status: ActionsTypes.FETCHED,
-        response: action.payload
-      };
+      state.status = ActionsTypes.FETCHED
+      state.response = action.payload
+      break
     }
-
     case CALL + ActionsTypes.ERROR: {
-      return {
-        ...state,
-        status: ActionsTypes.ERROR,
-        response: action.payload
-      };
+      state.status = ActionsTypes.ERROR
+      state.response = action.payload
+      break
     }
-
     default: {
-      return state;
+      console.log("SIEMPRE ENTRA ACA")
+      return state
     }
   }
-};
+});
 
 export default combineReducers({
-  
+  getCountries: getReducer(ActionsTypes.API_GET_COUNTRIES),
 });

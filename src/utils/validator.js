@@ -186,7 +186,7 @@ export default class Validator {
   /**
    * Evaluate an object with the specific schema for validation
    * @param schema the schema object
-   * @param data the data for evaluate
+   * @param data the data to be evaluated
    * @returns an object that represent the evaluation.
    */
   static validate = (schema, data) => {

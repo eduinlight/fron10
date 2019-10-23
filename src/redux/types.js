@@ -5,6 +5,5 @@ export default class ActionsTypes {
     static RESET = '_RESET'
 
     //API
-
-    
+    static API_GET_COUNTRIES = "API_GET_COUNTRIES"
 }
