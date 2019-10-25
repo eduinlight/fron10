@@ -68,14 +68,13 @@ class SearchTravel extends Component {
   }
 
   changeFlight = (index, key) => (value) => {
-    if (typeof (value) !== "string") {
+    if (typeof (value) === "object" && key !== "dateStart" && key !== "dateEnd") {
       value = value.target.value
     }
 
     Globals.dispatch(SearchTravelActions.changeFlight(index, key, value))
 
     const { searchTravel } = this.props
-    console.log(key)
     if (key === "dateStart" &&
       moment(value).isAfter(searchTravel.flights[index].dateEnd)) {
       Globals.dispatch(SearchTravelActions.changeFlight(index, "dateEnd", value))
