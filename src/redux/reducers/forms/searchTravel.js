@@ -33,6 +33,10 @@ export default produce((state = ini, action) => {
     case ActionsTypes.SEARCH_TRAVEL_CHANGE: {
       const { key, value } = action.payload
       state[key] = value
+
+      if (key === "travelType" && value !== TravelType.MULTI_CITY) {
+        state.flights = [state.flights[0]]
+      }
       break
     }
     case ActionsTypes.SEARCH_TRAVEL_CHANGE_PASSENGER: {
