@@ -2,6 +2,7 @@ import React, { PureComponent } from "react";
 
 import { connect } from "react-redux";
 import Globals from "../utils/globals";
+import PropTypes from "prop-types";
 
 class GlobalDispatchWrapper extends PureComponent {
 
