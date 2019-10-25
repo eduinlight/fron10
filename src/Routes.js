@@ -5,9 +5,9 @@ import {
   Switch,
 } from "react-router-dom";
 import Home from "./pages/Home";
-import Utils from "./util";
+import Utils from "./utils";
 import NotFound from "./pages/NotFound";
-import Globals from "./util/globals";
+import Globals from "./utils/globals";
 
 const routes = [
   {

@@ -16,6 +16,8 @@ const styles = theme => ({
 
 class PublicTemplate extends Component {
   render() {
+    const {classes} = this.props
+
     return (
       <>
         <AppBar position="static">
@@ -33,4 +35,4 @@ class PublicTemplate extends Component {
   }
 }
 
-export default PublicTemplate;
+export default withStyles(styles)(PublicTemplate);

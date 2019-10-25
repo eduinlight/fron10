@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { withStyles } from "@material-ui/styles";
 import SearchTravel from "./SearchTravel";
 import PublicTemplate from "../../templates/guest"
 import Globals from "../../utils/globals"
@@ -26,6 +25,5 @@ class Home extends Component {
 }
 
 export default connect(state => ({
-}))(withStyles(styles)(Home))
 
-})(Home);
+}))(Home)

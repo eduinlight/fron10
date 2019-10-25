@@ -121,4 +121,6 @@ class SearchTravel extends Component {
 
 export default connect(state => ({
   searchTravel: state.forms.searchTravel
-}))(withStyles(styles)(SearchTravel))
+}))(
+  withStyles(styles)(SearchTravel)
+)

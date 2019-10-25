@@ -1,7 +1,7 @@
 import React, { PureComponent } from "react";
 
 import { connect } from "react-redux";
-import Globals from "../util/globals";
+import Globals from "../utils/globals";
 
 class GlobalDispatchWrapper extends PureComponent {
 
