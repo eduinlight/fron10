@@ -12,7 +12,7 @@ export default class PassengerType {
    * @param name {String}
    * @param count {Number}
    */
-  constructor(id, name, count) {
+  constructor(id, name, count = 0) {
     this.id = id
     this.name = name
     this.count = count

@@ -20,20 +20,16 @@ export default class SearchTravelActions {
   })
 
   /**
-   * Increment a passenger type
+   * Change a passenger type
    * @param passenger {String}
+   * @param passenger {Number}
    */
-  static incrementPassenger = (passenger) => ({
-    type: ActionsTypes.SEARCH_TRAVEL_INCREMENT_PASSENGER,
-    payload: passenger
+  static changePassenger = (passenger, value) => ({
+    type: ActionsTypes.SEARCH_TRAVEL_CHANGE_PASSENGER,
+    payload: {
+      passenger,
+      value
+    }
   })
 
-  /**
-   * Decrement a passenger type
-   * @param passenger {String}
-   */
-  static decrementPassenger = (passenger) => ({
-    type: ActionsTypes.SEARCH_TRAVEL_DECREMENT_PASSENGER,
-    payload: passenger
-  })
 }

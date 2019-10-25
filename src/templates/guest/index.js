@@ -16,7 +16,7 @@ const styles = theme => ({
 
 class PublicTemplate extends Component {
   render() {
-    const {classes} = this.props
+    const { classes } = this.props
 
     return (
       <>

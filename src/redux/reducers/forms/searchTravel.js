@@ -14,14 +14,14 @@ const ini = {
     [PassengerType.YOUTH]: 0,
     [PassengerType.CHILD]: 0,
     [PassengerType.SEAT_INFANT]: 0,
-    [PassengerType.SEA]: 0,
+    [PassengerType.LAP_INFANT]: 0,
   }
 };
 
 export default produce((state = ini, action) => {
   switch (action.type) {
     case ActionsTypes.SEARCH_TRAVEL_RESET: {
-      state = ini
+      return ini
       break
     }
     case ActionsTypes.SEARCH_TRAVEL_CHANGE: {
@@ -29,14 +29,9 @@ export default produce((state = ini, action) => {
       state[key] = value
       break
     }
-    case ActionsTypes.SEARCH_TRAVEL_INCREMENT_PASSENGER: {
-      const passenger = action.payload
-      state.travelers[passenger]++
-      break
-    }
-    case ActionsTypes.SEARCH_TRAVEL_DECREMENT_PASSENGER: {
-      const passenger = action.payload
-      state.travelers[passenger]--
+    case ActionsTypes.SEARCH_TRAVEL_CHANGE_PASSENGER: {
+      const { passenger, value } = action.payload
+      state.travelers[passenger] = value
       break
     }
     default: {

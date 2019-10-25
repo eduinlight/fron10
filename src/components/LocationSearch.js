@@ -2,17 +2,35 @@ import React from 'react';
 import PlacesAutocomplete, {
   geocodeByAddress,
 } from 'react-places-autocomplete';
- 
+import { TextField, CircularProgress, Paper, List, ListItem, Grid } from '@material-ui/core';
+import PropTypes from 'prop-types';
+import { withStyles } from "@material-ui/styles"
+import FlightIcon from "@material-ui/icons/Flight"
+
+const styles = theme => ({
+  placeItem: {
+    cursor: "pointer"
+  },
+  fullWidth: {
+    width: "100%"
+  }
+})
+
 class LocationSearchInput extends React.Component {
+
+  static propTypes = {
+    placeholder: PropTypes.string.isRequired
+  }
+
   constructor(props) {
     super(props);
     this.state = { address: '' };
   }
- 
+
   handleChange = address => {
     this.setState({ address });
   };
- 
+
   handleSelect = address => {
     geocodeByAddress(address)
       .then(results => {
@@ -23,8 +41,10 @@ class LocationSearchInput extends React.Component {
       })
       .catch(error => console.error('Error', error));
   };
- 
+
   render() {
+    const { placeholder, classes } = this.props
+
     return (
       <PlacesAutocomplete
         value={this.state.address}
@@ -33,34 +53,38 @@ class LocationSearchInput extends React.Component {
       >
         {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
           <div>
-            <input
-              {...getInputProps({
-                placeholder: 'Search Places ...',
-                className: 'location-search-input',
-              })}
-            />
-            <div className="autocomplete-dropdown-container">
-              {loading && <div>Loading...</div>}
-              {suggestions.map(suggestion => {
-                const className = suggestion.active
-                  ? 'suggestion-item--active'
-                  : 'suggestion-item';
-                // inline style for demonstration purpose
-                const style = suggestion.active
-                  ? { backgroundColor: '#fafafa', cursor: 'pointer' }
-                  : { backgroundColor: '#ffffff', cursor: 'pointer' };
-                return (
-                  <div
-                    {...getSuggestionItemProps(suggestion, {
-                      className,
-                      style,
-                    })}
-                  >
-                    <span>{suggestion.description}</span>
-                  </div>
-                );
-              })}
-            </div>
+            <Grid container spacing={1} alignItems="flex-end" wrap="nowrap">
+              <Grid item>
+                <FlightIcon />
+              </Grid>
+              <Grid item className={classes.fullWidth}>
+                <TextField
+                  fullWidth
+                  {...getInputProps({
+                    placeholder: placeholder,
+                    className: 'location-search-input',
+                  })}
+                />
+              </Grid>
+            </Grid>
+            <Paper>
+              {loading && <CircularProgress size={25} />}
+              {!loading && suggestions.length > 0 &&
+                <List>
+                  {suggestions.map(suggestion => {
+                    return (
+                      <ListItem
+                        className={classes.placeItem}
+                        selected={suggestion.active}
+                        {...getSuggestionItemProps(suggestion)}
+                      >
+                        <span>{suggestion.description}</span>
+                      </ListItem>
+                    );
+                  })}
+                </List>}
+
+            </Paper>
           </div>
         )}
       </PlacesAutocomplete>
@@ -68,4 +92,4 @@ class LocationSearchInput extends React.Component {
   }
 }
 
-export default LocationSearchInput
+export default withStyles(styles)(LocationSearchInput)

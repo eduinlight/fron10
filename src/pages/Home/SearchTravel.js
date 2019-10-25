@@ -2,13 +2,22 @@ import React, { Component } from "react";
 
 import { connect } from "react-redux";
 import { withStyles } from "@material-ui/styles";
-import { Grid, Typography, Select, MenuItem } from "@material-ui/core";
+import { Grid, Typography, Select, MenuItem, Hidden, Button, Icon, Divider } from "@material-ui/core";
 import PropTypes from "prop-types"
 import LocationSearchInput from "../../components/LocationSearch";
 import TravelType from "../../classes/TravelType";
 import SearchTravelActions from "../../redux/actions/SearchTravelActions";
 import TravelClass from "../../classes/TravelClass";
 import Globals from "../../utils/globals"
+import TravelersSelect from "./TravelersSelect";
+import SearchIcon from "@material-ui/icons/Search";
+import AddIcon from "@material-ui/icons/Add";
+import MomentUtils from '@date-io/moment';
+import {
+  DateTimePicker,
+  MuiPickersUtilsProvider,
+} from "@material-ui/pickers";
+import CalendarIcon from "@material-ui/icons/CalendarToday"
 
 const styles = theme => ({
 })
@@ -38,7 +47,7 @@ class SearchTravel extends Component {
   }
 
   state = {
-
+    date: new Date()
   }
 
   componentDidMount() {
@@ -95,26 +104,111 @@ class SearchTravel extends Component {
       </Select>
     )
 
-    return (
-      <Grid container spacing={2}>
-        <Grid item xs={12} >
-          <Typography variant="h4">
-            {title}
-          </Typography>
+    const DateInput = ({ value, onChange, ...other }) => (
+      <Grid container spacing={1} alignItems="flex-end" wrap="nowrap">
+        <Grid item>
+          <CalendarIcon />
         </Grid>
-        <Grid item xs={12} sm={4}>
-          <TType />
-        </Grid>
-        <Grid item xs={12} sm={4}>
-
-        </Grid>
-        <Grid item xs={12} sm={4}>
-          <TClass />
-        </Grid>
-        <Grid item xs={12} sm={3}>
-          <LocationSearchInput />
+        <Grid item>
+          <MuiPickersUtilsProvider utils={MomentUtils}>
+            <DateTimePicker value={value} format="D/MM/YYYY - HA" onChange={onChange} {...other} />
+          </MuiPickersUtilsProvider>
         </Grid>
       </Grid>
+    )
+
+    return (
+      <>
+        <Grid container direction="row" spacing={2}>
+          <Grid item>
+            <Typography variant="h4">
+              {title}
+            </Typography>
+          </Grid>
+        </Grid>
+        <Hidden smDown>
+          <Grid container direction="row" spacing={2}>
+            <Grid item>
+              <TType />
+            </Grid>
+            <Grid item>
+              <TravelersSelect travelers={searchTravel.travelers} />
+            </Grid>
+            <Grid item>
+              <TClass />
+            </Grid>
+          </Grid>
+        </Hidden>
+        <Hidden smUp>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <TType />
+            </Grid>
+            <Grid item xs={12}>
+              <TravelersSelect travelers={searchTravel.travelers} />
+            </Grid>
+            <Grid item xs={12}>
+              <TClass />
+            </Grid>
+          </Grid>
+        </Hidden>
+        <Grid container spacing={2}>
+          <Grid item xs={12} sm={3}>
+            <LocationSearchInput
+              placeholder="From"
+            />
+          </Grid>
+          <Grid item xs={12} sm={3}>
+            <LocationSearchInput
+              placeholder="To"
+            />
+          </Grid>
+          <Grid item xs={12} sm={searchTravel.travelType === TravelType.ONE_WAY ? 4 : 2}>
+            <DateInput value={this.state.date} onChange={() => { }} />
+          </Grid>
+          {searchTravel.travelType !== TravelType.ONE_WAY &&
+            <Grid item xs={12} sm={2}>
+              <DateInput value={this.state.date} onChange={() => { }} />
+            </Grid>
+          }
+          {searchTravel.travelType !== TravelType.MULTI_CITY &&
+            <Grid item xs={12} sm={2}>
+              <Button fullWidth variant="contained" color="primary">
+                <SearchIcon />
+                Search
+            </Button>
+            </Grid>
+          }
+          <Grid item xs={12}>
+            <Divider />
+          </Grid>
+        </Grid>
+        <Grid spacing={3} container direction="row" justify="space-between">
+          {searchTravel.travelType === TravelType.MULTI_CITY &&
+            <Grid item xs={12} sm="auto">
+              <Button fullWidth>
+                <AddIcon />
+                Add flight
+            </Button>
+            </Grid>
+          }
+
+          <Grid item xs={12} sm="auto">
+            <Button fullWidth onClick={this.reset}>
+              Clear
+            </Button>
+          </Grid>
+          {searchTravel.travelType === TravelType.MULTI_CITY &&
+            <Grid item xs={12} sm="auto">
+              <Button fullWidth variant="contained" color="primary">
+                <SearchIcon />
+                Search
+            </Button>
+            </Grid>
+          }
+
+        </Grid>
+      </>
     )
   }
 }
