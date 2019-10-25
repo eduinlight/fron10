@@ -13,42 +13,40 @@ const styles = theme => ({
   },
   fullWidth: {
     width: "100%"
+  },
+  paper: {
+    position: "absolute",
+    zIndex: 10
   }
 })
 
 class LocationSearchInput extends React.Component {
 
   static propTypes = {
-    placeholder: PropTypes.string.isRequired
-  }
-
-  constructor(props) {
-    super(props);
-    this.state = { address: '' };
+    placeholder: PropTypes.string.isRequired,
+    address: PropTypes.string.isRequired,
+    onChange: PropTypes.func.isRequired,
   }
 
   handleChange = address => {
-    this.setState({ address });
+    this.props.onChange(address)
   };
 
   handleSelect = address => {
     geocodeByAddress(address)
       .then(results => {
-        console.log(results[0])
-        this.setState({
-          address: results[0].formatted_address
-        })
+        this.handleChange(results[0].formatted_address)
       })
       .catch(error => console.error('Error', error));
   };
 
   render() {
-    const { placeholder, classes } = this.props
+    const { placeholder, address, classes, onChange } = this.props
 
     return (
       <PlacesAutocomplete
-        value={this.state.address}
-        onChange={this.handleChange}
+        value={address}
+        onChange={onChange}
         onSelect={this.handleSelect}
       >
         {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
@@ -67,7 +65,7 @@ class LocationSearchInput extends React.Component {
                 />
               </Grid>
             </Grid>
-            <Paper>
+            <Paper className={classes.paper}>
               {loading && <CircularProgress size={25} />}
               {!loading && suggestions.length > 0 &&
                 <List>

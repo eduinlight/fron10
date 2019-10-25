@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 import { connect } from "react-redux";
 import { withStyles } from "@material-ui/styles";
-import { Grid, Typography, Select, MenuItem, Hidden, Button, Icon, Divider } from "@material-ui/core";
+import { Grid, Typography, Select, MenuItem, Hidden, Button, Divider } from "@material-ui/core";
 import PropTypes from "prop-types"
 import LocationSearchInput from "../../components/LocationSearch";
 import TravelType from "../../classes/TravelType";
@@ -13,11 +13,13 @@ import TravelersSelect from "./TravelersSelect";
 import SearchIcon from "@material-ui/icons/Search";
 import AddIcon from "@material-ui/icons/Add";
 import MomentUtils from '@date-io/moment';
+import moment from 'moment';
 import {
   DateTimePicker,
   MuiPickersUtilsProvider,
 } from "@material-ui/pickers";
 import CalendarIcon from "@material-ui/icons/CalendarToday"
+import RemoveIcon from "@material-ui/icons/Remove"
 
 const styles = theme => ({
 })
@@ -53,10 +55,6 @@ class SearchTravel extends Component {
   componentDidMount() {
   }
 
-  static getDerivedStateFromProps(props, state) {
-
-  }
-
   onChange = (event) => {
     Globals.dispatch(
       SearchTravelActions.change(event.target.name, event.target.value)
@@ -69,8 +67,26 @@ class SearchTravel extends Component {
     )
   }
 
+  changeFlight = (index, key) => (value) => {
+    Globals.dispatch(SearchTravelActions.changeFlight(index, key, value))
+
+    const { searchTravel } = this.props
+    if (key === "dateStart" &&
+      moment(value).isAfter(searchTravel.flights[index].dateEnd)) {
+      Globals.dispatch(SearchTravelActions.changeFlight(index, "dateEnd", value))
+    }
+  }
+
+  addFlight = () => {
+    Globals.dispatch(SearchTravelActions.addFlight())
+  }
+
+  removeFlight = (index) => () => {
+    Globals.dispatch(SearchTravelActions.removeFlight(index))
+  }
+
   render() {
-    const { title, classes, searchTravel } = this.props
+    const { title, searchTravel } = this.props
 
     const TType = () => (
       <Select
@@ -152,41 +168,65 @@ class SearchTravel extends Component {
             </Grid>
           </Grid>
         </Hidden>
-        <Grid container spacing={2}>
-          <Grid item xs={12} sm={3}>
-            <LocationSearchInput
-              placeholder="From"
-            />
-          </Grid>
-          <Grid item xs={12} sm={3}>
-            <LocationSearchInput
-              placeholder="To"
-            />
-          </Grid>
-          <Grid item xs={12} sm={searchTravel.travelType === TravelType.ONE_WAY ? 4 : 2}>
-            <DateInput value={this.state.date} onChange={() => { }} />
-          </Grid>
-          {searchTravel.travelType !== TravelType.ONE_WAY &&
-            <Grid item xs={12} sm={2}>
-              <DateInput value={this.state.date} onChange={() => { }} />
+        {searchTravel.flights.map((flight, index) => {
+          return (
+            <Grid container spacing={2} key={index}>
+              <Grid item xs={12} sm={3}>
+                <LocationSearchInput
+                  placeholder="From"
+                  address={flight.from}
+                  onChange={this.changeFlight(index, "from")}
+                />
+              </Grid>
+              <Grid item xs={12} sm={3}>
+                <LocationSearchInput
+                  placeholder="To"
+                  address={flight.to}
+                  onChange={this.changeFlight(index, "to")}
+                />
+              </Grid>
+              <Grid item xs={12} sm={searchTravel.travelType === TravelType.ONE_WAY ? 4 : 2}>
+                <DateInput
+                  minDate={new Date()}
+                  value={flight.dateStart}
+                  onChange={this.changeFlight(index, "dateStart")}
+                />
+              </Grid>
+              {searchTravel.travelType !== TravelType.ONE_WAY &&
+                <Grid item xs={12} sm={2}>
+                  <DateInput
+                    minDate={flight.dateStart}
+                    value={flight.dateEnd}
+                    onChange={this.changeFlight(index, "dateStart")}
+                  />
+                </Grid>
+              }
+              {searchTravel.travelType !== TravelType.MULTI_CITY &&
+                <Grid item xs={12} sm={2}>
+                  <Button fullWidth variant="contained" color="primary">
+                    <SearchIcon />
+                    Search
+                  </Button>
+                </Grid>
+              }
+              {searchTravel.travelType === TravelType.MULTI_CITY && index > 0 &&
+                < Grid item xs={12} sm={2}>
+                  <Button variant="contained" onClick={this.removeFlight(index)}>
+                    <RemoveIcon />
+                  </Button>
+                </Grid>
+              }
+              <Grid item xs={12}>
+                <Divider />
+              </Grid>
             </Grid>
-          }
-          {searchTravel.travelType !== TravelType.MULTI_CITY &&
-            <Grid item xs={12} sm={2}>
-              <Button fullWidth variant="contained" color="primary">
-                <SearchIcon />
-                Search
-            </Button>
-            </Grid>
-          }
-          <Grid item xs={12}>
-            <Divider />
-          </Grid>
-        </Grid>
+          )
+        })}
+
         <Grid spacing={3} container direction="row" justify="space-between">
           {searchTravel.travelType === TravelType.MULTI_CITY &&
             <Grid item xs={12} sm="auto">
-              <Button fullWidth>
+              <Button fullWidth onClick={this.addFlight}>
                 <AddIcon />
                 Add flight
             </Button>

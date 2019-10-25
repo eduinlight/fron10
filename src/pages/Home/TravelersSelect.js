@@ -1,15 +1,12 @@
 import React, { Component } from "react";
 
-import { connect } from "react-redux";
 import { withStyles } from "@material-ui/styles";
-import { Grid, Typography, Select, MenuItem, Popover, Menu, List, ListItem, Divider } from "@material-ui/core";
+import { Grid, Typography, Select, MenuItem, Popover, List, ListItem, Divider } from "@material-ui/core";
 import PropTypes from "prop-types"
-import LocationSearchInput from "../../components/LocationSearch";
 import PassengerType from "../../classes/PassengerType";
 import SearchTravelActions from "../../redux/actions/SearchTravelActions";
 import Globals from "../../utils/globals"
 import IntegerNumber from "../../components/IntegerNumber";
-import { Global } from "@jest/types";
 
 const styles = theme => ({
   hidden: {
@@ -143,7 +140,7 @@ class TravelersSelect extends Component {
     const childrens = this.countChildrens(travelers)
     const infants = this.countInfants(travelers)
     const totalTravelers = adults + childrens + infants
-    if (totalTravelers == 1 && adults == 1) {
+    if (totalTravelers === 1 && adults === 1) {
       text = "1 adult"
     } else {
       text = `${totalTravelers} travelers`

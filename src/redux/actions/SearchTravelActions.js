@@ -32,4 +32,37 @@ export default class SearchTravelActions {
     }
   })
 
+  /**
+   * Change a flight index
+   * @param index {Number}
+   * @param key {String}
+   * @param value {Number}
+   */
+  static changeFlight = (index, key, value) => ({
+    type: ActionsTypes.SEARCH_TRAVEL_CHANGE_FLIGHT,
+    payload: {
+      index,
+      key,
+      value
+    }
+  })
+
+  /**
+   * Add another flight
+   */
+  static addFlight = () => ({
+    type: ActionsTypes.SEARCH_TRAVEL_ADD_FLIGHT,
+  })
+
+  /**
+   * remove a flight
+   * @param index {Number}
+   */
+  static removeFlight = (index) => ({
+    type: ActionsTypes.SEARCH_TRAVEL_REMOVE_FLIGHT,
+    payload: {
+      index
+    }
+  })
+
 }
