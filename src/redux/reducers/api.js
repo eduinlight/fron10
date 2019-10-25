@@ -8,8 +8,8 @@ const ini = {
 };
 
 /**
- *  Create a reducer to handle API CALLS
- * @param {String} CALL is the type of action to catch
+ * Create a reducer to handle API CALLS
+  * @param CALL {String}  the type of action to catch 
  */
 
 const getReducer = CALL => produce((state = ini, action) => {
@@ -33,7 +33,6 @@ const getReducer = CALL => produce((state = ini, action) => {
       break
     }
     default: {
-      console.log("SIEMPRE ENTRA ACA")
       return state
     }
   }
@@ -41,4 +40,4 @@ const getReducer = CALL => produce((state = ini, action) => {
 
 export default combineReducers({
   getCountries: getReducer(ActionsTypes.API_GET_COUNTRIES),
-});
+}); 

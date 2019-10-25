@@ -1,20 +1,17 @@
 import React, { Component } from "react";
-import { AppBar, Toolbar, Typography } from "@material-ui/core";
+import { AppBar, Toolbar, Typography, Container } from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
 
 /**
  * This component is only for demostration
  */
 const styles = theme => ({
-  root: {
-    flexGrow: 1,
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
-  },
   title: {
     flexGrow: 1,
   },
+  container: {
+    marginTop: theme.spacing(3)
+  }
 });
 
 class PublicTemplate extends Component {
@@ -30,7 +27,9 @@ class PublicTemplate extends Component {
             </Typography>
           </Toolbar>
         </AppBar>
-        {this.props.children}
+        <Container className={classes.container}>
+          {this.props.children}
+        </Container>
       </>
     );
   }
