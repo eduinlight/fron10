@@ -1,22 +1,31 @@
 import React, { Component } from "react";
-
 import { connect } from "react-redux";
+import { withStyles } from "@material-ui/styles";
+import SearchTravel from "./SearchTravel";
+import PublicTemplate from "../../templates/guest"
+import Globals from "../../utils/globals"
+import ApiActions from "../../redux/actions/api"
 
 class Home extends Component {
-
   componentDidMount() {
+    Globals.dispatch(
+      ApiActions.getCountries()
+    )
   }
 
   render() {
     return (
-      <div>
-        Hey you are here
-    </div>
+      <PublicTemplate>
+        <SearchTravel
+          title="Search hundreds of travel sites at once."
+        />
+      </PublicTemplate>
     )
 
   }
 }
 
-export default connect(state => {
+export default connect(state => ({
+}))(withStyles(styles)(Home))
 
 })(Home);

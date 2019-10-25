@@ -8,7 +8,7 @@ const ini = {
 
 /**
  *  Create a reducer to handle API CALLS
- * @param {String} CALL is the type of action to catch
+ * @param CALL {String}  the type of action to catch
  */
 
 const getReducer = CALL => (state = { ...ini }, action) => {
@@ -42,7 +42,7 @@ const getReducer = CALL => (state = { ...ini }, action) => {
     }
 
     default: {
-      return state;
+      return state
     }
   }
 };
