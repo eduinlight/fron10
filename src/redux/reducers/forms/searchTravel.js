@@ -6,7 +6,6 @@ import PassengerType from "../../../classes/PassengerType"
 
 const ini = {
   travelType: TravelType.ROUND_TRIP,
-  travelClass: TravelClass.ECONOMY,
   travelers: {
     [PassengerType.ADULTS]: 1,
     [PassengerType.SENIORS]: 0,
@@ -21,6 +20,7 @@ const ini = {
       to: "",
       dateStart: new Date(),
       dateEnd: new Date(),
+      class: TravelClass.ECONOMY,
     }
   ]
 };
@@ -55,6 +55,7 @@ export default produce((state = ini, action) => {
         to: "",
         dateStart: new Date(),
         dateEnd: new Date(),
+        class: TravelClass.ECONOMY,
       })
       break
     }

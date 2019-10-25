@@ -68,6 +68,10 @@ class SearchTravel extends Component {
   }
 
   changeFlight = (index, key) => (value) => {
+    if (typeof (value) !== "string") {
+      value = value.target.value
+    }
+
     Globals.dispatch(SearchTravelActions.changeFlight(index, key, value))
 
     const { searchTravel } = this.props
@@ -105,13 +109,13 @@ class SearchTravel extends Component {
       </Select>
     )
 
-    const TClass = () => (
+    const TClass = ({ index }) => (
       <Select
-        value={searchTravel.travelClass}
+        value={searchTravel.flights[index].class}
         fullWidth inputProps={{
-          name: 'travelClass',
+          name: 'class',
         }}
-        onChange={this.onChange}
+        onChange={this.changeFlight(index, "class")}
       >
         {travelClasses.map(travelClass => {
           return (
@@ -151,9 +155,11 @@ class SearchTravel extends Component {
             <Grid item>
               <TravelersSelect travelers={searchTravel.travelers} />
             </Grid>
-            <Grid item>
-              <TClass />
-            </Grid>
+            {searchTravel.travelType !== TravelType.MULTI_CITY &&
+              <Grid item>
+                <TClass index={0} />
+              </Grid>
+            }
           </Grid>
         </Hidden>
         <Hidden only={['sm', 'md', 'lg', 'xl']}>
@@ -164,9 +170,11 @@ class SearchTravel extends Component {
             <Grid item xs={12}>
               <TravelersSelect travelers={searchTravel.travelers} />
             </Grid>
-            <Grid item xs={12}>
-              <TClass />
-            </Grid>
+            {searchTravel.travelType !== TravelType.MULTI_CITY &&
+              <Grid item>
+                <TClass index={0} />
+              </Grid>
+            }
           </Grid>
         </Hidden>
         {searchTravel.flights.map((flight, index) => {
@@ -193,13 +201,18 @@ class SearchTravel extends Component {
                   onChange={this.changeFlight(index, "dateStart")}
                 />
               </Grid>
-              {searchTravel.travelType !== TravelType.ONE_WAY &&
+              {searchTravel.travelType === TravelType.ROUND_TRIP &&
                 <Grid item xs={12} sm={2}>
                   <DateInput
                     minDate={flight.dateStart}
                     value={flight.dateEnd}
                     onChange={this.changeFlight(index, "dateEnd")}
                   />
+                </Grid>
+              }
+              {searchTravel.travelType === TravelType.MULTI_CITY &&
+                <Grid item xs={12} sm={2}>
+                  <TClass index={index} />
                 </Grid>
               }
               {searchTravel.travelType !== TravelType.MULTI_CITY &&
