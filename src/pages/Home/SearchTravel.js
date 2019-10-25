@@ -142,7 +142,7 @@ class SearchTravel extends Component {
             </Typography>
           </Grid>
         </Grid>
-        <Hidden xsUp>
+        <Hidden only={['xs']}>
           <Grid container direction="row" spacing={2}>
             <Grid item>
               <TType />
@@ -155,7 +155,7 @@ class SearchTravel extends Component {
             </Grid>
           </Grid>
         </Hidden>
-        <Hidden xsDown>
+        <Hidden only={['sm', 'md', 'lg', 'xl']}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TType />
