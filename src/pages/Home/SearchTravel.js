@@ -71,6 +71,7 @@ class SearchTravel extends Component {
     Globals.dispatch(SearchTravelActions.changeFlight(index, key, value))
 
     const { searchTravel } = this.props
+    console.log(key)
     if (key === "dateStart" &&
       moment(value).isAfter(searchTravel.flights[index].dateEnd)) {
       Globals.dispatch(SearchTravelActions.changeFlight(index, "dateEnd", value))
@@ -197,7 +198,7 @@ class SearchTravel extends Component {
                   <DateInput
                     minDate={flight.dateStart}
                     value={flight.dateEnd}
-                    onChange={this.changeFlight(index, "dateStart")}
+                    onChange={this.changeFlight(index, "dateEnd")}
                   />
                 </Grid>
               }
