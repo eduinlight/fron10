@@ -5,6 +5,10 @@ import Globals from "../utils/globals";
 
 class GlobalDispatchWrapper extends PureComponent {
 
+  static propsTypes = {
+    dispatch: PropTypes.object.isRequired
+  }
+
   state = {
     dispatchOk: false
   }
@@ -33,4 +37,4 @@ class GlobalDispatchWrapper extends PureComponent {
   }
 }
 
-export default connect(state => ({}))(GlobalDispatchWrapper);
+export default connect(_ => ({}))(GlobalDispatchWrapper);

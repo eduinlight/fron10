@@ -19,7 +19,7 @@ export default class ApiActions {
     exec(
       dispatch,
       ActionsTypes.API_GET_COUNTRIES,
-      Http.get(`${Config.apiCotizaUrl}/country/?limit=${Number.MAX_SAFE_INTEGER}`)
+      Http.get(`${Config.apiUrl}/country`)
     )
   }
 

@@ -47,7 +47,6 @@ class Home extends Component {
         </Grid>
       </PublicTemplate>
     )
-
   }
 }
 
